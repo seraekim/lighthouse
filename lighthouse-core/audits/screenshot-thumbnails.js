@@ -72,12 +72,17 @@ class ScreenshotThumbnails extends Audit {
 
     const speedline = await artifacts.requestSpeedline(trace);
 
-    let alternativeMaximumValue = 0;
+    let minimumTimelineDuration = 0;
+    // Ensure thumbnails cover the full range of the trace (TTI can be later than visually complete)
     if (context.settings.throttlingMethod !== 'simulate') {
       const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
       const metricComputationData = {trace, devtoolsLog, settings: context.settings};
       const ttci = artifacts.requestConsistentlyInteractive(metricComputationData);
-      alternativeMaximumValue = (await ttci.catch(() => ({timing: 0}))).timing;
+      try {
+        minimumTimelineDuration = (await ttci).timing;
+      } catch (_) {
+        minimumTimelineDuration = 0;
+      }
     }
 
     const thumbnails = [];
@@ -85,9 +90,7 @@ class ScreenshotThumbnails extends Audit {
     const maxFrameTime =
       speedline.complete ||
       Math.max(...speedline.frames.map(frame => frame.getTimeStamp() - speedline.beginning));
-    // Find thumbnails to cover the full range of the trace (max of last visual change and time
-    // to interactive).
-    const timelineEnd = Math.max(maxFrameTime, alternativeMaximumValue);
+    const timelineEnd = Math.max(maxFrameTime, minimumTimelineDuration);
 
     if (!analyzedFrames.length || !Number.isFinite(timelineEnd)) {
       throw new LHError(LHError.errors.INVALID_SPEEDLINE);
