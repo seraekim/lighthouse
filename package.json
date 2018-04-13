@@ -40,9 +40,13 @@
     "viewer-unit": "yarn unit-viewer",
     "watch": "yarn unit-core --watch",
 
-    "unit:silentcoverage": "nyc --silent yarn unit",
+    "unit:silentcoverage": "nyc --silent yarn unit && nyc report --reporter lcovonly",
     "coverage": "nyc yarn unit && nyc report --reporter html",
-    "coveralls": "nyc report --reporter lcovonly && cat ./coverage/lcov.info | coveralls && codecov",
+    "coveralls": "cat ./coverage/lcov.info | coveralls && codecov",
+
+    "smoke:silentcoverage": "nyc --silent yarn smoke && nyc report --reporter=text-lcov > smoke-coverage.lcov",
+    "coverage:smoke": "nyc yarn smoke && nyc report --reporter html",
+    "codecov:smoke": "codecov -file smoke-coverage.lcov --flags smoke",
 
     "closure": "cd lighthouse-core && node closure/closure-type-checking.js",
     "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",

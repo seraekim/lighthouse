@@ -17,6 +17,13 @@ coverage:
       default:
         threshold: 1%
         if_not_found: success  # no commit found? still set a success
+      smoke:
+        flags: smoke
+        threshold: 1%
+        if_not_found: success  # no commit found? still set a success
     patch:
       default:
         if_not_found: success
+      smoke:
+        flags: smoke
+        if_not_found: success  # no commit found? still set a success

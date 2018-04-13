@@ -31,14 +31,14 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - yarn build-all
 script:
-  - yarn bundlesize
-  - yarn lint
+  # - yarn bundlesize
+  # - yarn lint
   - yarn unit:silentcoverage
   - yarn type-check
-  - yarn closure
-  - yarn diff:sample-json
-  - yarn smoke
-  - yarn test-extension
+  # - yarn closure
+  # - yarn diff:sample-json
+  - yarn smoke:silentcoverage
+  # - yarn test-extension
   # _JAVA_OPTIONS is breaking parsing of compiler output. See #3338.
   - unset _JAVA_OPTIONS
   # FIXME(paulirish): re-enable after a roll of LH->CDT
@@ -49,5 +49,6 @@ before_cache:
   - rm -rf ./node_modules/temp-devtoolsprotocol/
 after_success:
   - yarn coveralls
+  - yarn codecov:smoke
 addons:
   chrome: stable
