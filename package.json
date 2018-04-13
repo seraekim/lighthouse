@@ -44,9 +44,9 @@
     "coverage": "nyc yarn unit && nyc report --reporter html",
     "coveralls": "cat ./coverage/lcov.info | coveralls && codecov",
 
-    "smoke:silentcoverage": "nyc --silent yarn smoke && nyc report --reporter=text-lcov > smoke-coverage.lcov",
+    "smoke:silentcoverage": "nyc yarn smoke && nyc report --reporter=text-lcov > smoke-coverage.lcov",
     "coverage:smoke": "nyc yarn smoke && nyc report --reporter html",
-    "codecov:smoke": "codecov -file smoke-coverage.lcov --flags smoke",
+    "codecov:smoke": "codecov --file smoke-coverage.lcov --flags smoke",
 
     "closure": "cd lighthouse-core && node closure/closure-type-checking.js",
     "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",
