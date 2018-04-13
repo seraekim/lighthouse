@@ -78,7 +78,7 @@ function collectTagsThatBlockFirstPaint() {
       resolve(tagList);
     } catch (e) {
       const friendly = 'Unable to gather Scripts/Stylesheets/HTML Imports on the page';
-      reject(new Error(`${friendly}: ${e && e.message}`));
+      reject(new Error(`${friendly}: ${e.message}`));
     }
   });
 }
